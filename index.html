@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Kho - Sidebar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <button class="mobile-toggle" id="mobile-toggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">W</div>
+            <span class="brand-name">WMS PRO</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active" data-page="dashboard">
+                    <a href="#"><i class="fa-solid fa-chart-line"></i> <span>Tổng quan</span></a>
+                </li>
+                <li data-page="inventory">
+                    <a href="#"><i class="fa-solid fa-boxes-stacked"></i> <span>Quản lý kho</span></a>
+                </li>
+                <li data-page="plans">
+                    <a href="#"><i class="fa-solid fa-calendar-check"></i> <span>Kế hoạch</span></a>
+                </li>
+                <li data-page="reports">
+                    <a href="#"><i class="fa-solid fa-file-invoice"></i> <span>Báo cáo</span></a>
+                </li>
+                <li data-page="settings">
+                    <a href="#"><i class="fa-solid fa-gear"></i> <span>Cài đặt</span></a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="#" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="main-header">
+            <h2>Quản lý kho thiết bị</h2>
+            <button class="btn-primary"><i class="fa-solid fa-plus"></i> Thêm thiết bị</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e0e7ff; color: #6366f1;"><i class="fa-solid fa-laptop"></i></div>
+                <div class="stat-info">
+                    <span>Tổng thiết bị</span>
+                    <h3>1,248</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #dcfce7; color: #22c55e;"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                <div class="stat-info">
+                    <span>Đang sử dụng</span>
+                    <h3>850</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fef9c3; color: #eab308;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="stat-info">
+                    <span>Sắp hết hàng</span>
+                    <h3>12</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fee2e2; color: #ef4444;"><i class="fa-solid fa-circle-xmark"></i></div>
+                <div class="stat-info">
+                    <span>Cần bảo trì</span>
+                    <h3>05</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Tìm mã SKU, tên thiết bị...">
+            </div>
+            <div class="filter-options">
+                <select>
+                    <option>Tất cả danh mục</option>
+                    <option>Laptop</option>
+                    <option>Linh kiện</option>
+                </select>
+                <button class="btn-secondary"><i class="fa-solid fa-filter"></i> Lọc</button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Thiết bị</th>
+                        <th>Mã SKU</th>
+                        <th>Danh mục</th>
+                        <th>Tồn kho</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="device-info">
+                                <strong>MacBook Pro M3</strong>
+                                <small>Apple Inc.</small>
+                            </div>
+                        </td>
+                        <td><span class="sku-tag">LAP-2024-001</span></td>
+                        <td>Laptop</td>
+                        <td><strong>45</strong></td>
+                        <td><span class="status-badge success">Sẵn sàng</span></td>
+                        <td>
+                            <div class="actions">
+                                <button title="Sửa"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button title="Xóa" class="text-red"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="device-info">
+                                <strong>Dell UltraSharp 27</strong>
+                                <small>Dell</small>
+                            </div>
+                        </td>
+                        <td><span class="sku-tag">MON-27-DELL</span></td>
+                        <td>Màn hình</td>
+                        <td><strong>03</strong></td>
+                        <td><span class="status-badge warning">Sắp hết</span></td>
+                        <td>
+                            <div class="actions">
+                                <button title="Sửa"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button title="Xóa" class="text-red"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div class="overlay" id="overlay"></div>
+
+</body>
+</html>
