@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMS PRO - Hệ Thống Quản Lý Kho</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo"><span>W</span> WMS PRO</div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="changePage('dashboard', this)">
+                <i class="fa-solid fa-gauge"></i> <span>Tổng quan</span>
+            </li>
+            <li class="nav-item" onclick="changePage('inventory', this)">
+                <i class="fa-solid fa-boxes-stacked"></i> <span>Quản lý kho</span>
+            </li>
+            <li class="nav-item" onclick="changePage('plans', this)">
+                <i class="fa-solid fa-calendar-days"></i> <span>Kế hoạch</span>
+            </li>
+            <li class="nav-item" onclick="changePage('reports', this)">
+                <i class="fa-solid fa-chart-line"></i> <span>Báo cáo</span>
+            </li>
+            <li class="nav-item" onclick="changePage('settings', this)">
+                <i class="fa-solid fa-gears"></i> <span>Cài đặt</span>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="wrapper">
+        <nav class="top-nav">
+            <div id="page-title">Tổng quan</div>
+            <div class="user-info">Admin <i class="fa-solid fa-circle-user"></i></div>
+        </nav>
+        
+        <div class="content-body" id="app-content">
+            afd
+            </div>
+        <main class="main-content" id="main-display">
+        
+        </main>
+    </div>
+    <script>
+        // // 1. Định nghĩa nội dung các trang (Templates)
+        // const pageTemplates = {
+        //     dashboard: `
+        //         <div class="card">
+        //             <h2>Chào mừng trở lại!</h2>
+        //             <p style="margin-top:10px; color:#64748b;">Hôm nay bạn có 5 kế hoạch nhập hàng mới cần duyệt.</p>
+        //         </div>
+        //     `,
+        //     inventory: `
+        //         <div class="header-action" style="display:flex; justify-content:space-between; margin-bottom:20px;">
+        //             <h2>Danh sách thiết bị</h2>
+        //             <button class="btn btn-primary">+ Thêm thiết bị</button>
+        //         </div>
+        //         <div class="card">
+        //             <p>Đang tải dữ liệu từ kho...</p>
+        //         </div>
+        //     `,
+        //     plans: `
+        //         <h2>Kế hoạch nhập xuất</h2>
+        //         <div class="card" style="margin-top:20px;">Lịch trình dự kiến tháng 4/2026...</div>
+        //     `,
+        //     reports: `
+        //         <h2>Báo cáo thống kê</h2>
+        //         <div class="card" style="margin-top:20px;">Biểu đồ tăng trưởng tồn kho...</div>
+        //     `,
+        //     settings: `
+        //         <h2>Cài đặt hệ thống</h2>
+        //         <div class="card" style="margin-top:20px;">Cấu hình kết nối SQL, Email thông báo...</div>
+        //     `
+        // };
+
+        // // 2. Hàm điều hướng trang
+        // function navigate(pageId, element) {
+        //     // Thay đổi nội dung
+        //     const contentArea = document.getElementById('app-content');
+        //     const pageTitle = document.getElementById('page-title');
+            
+        //     contentArea.innerHTML = pageTemplates[pageId];
+            
+        //     // Cập nhật tiêu đề trên TopNav
+        //     const labels = { dashboard: 'Tổng quan', inventory: 'Quản lý kho', plans: 'Kế hoạch', reports: 'Báo cáo', settings: 'Cài đặt' };
+        //     pageTitle.innerText = labels[pageId];
+
+        //     // Cập nhật trạng thái Active trên Menu
+        //     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        //     element.classList.add('active');
+
+        //     // Lưu trạng thái trang hiện tại (tùy chọn)
+        //     localStorage.setItem('currentPage', pageId);
+        // }
+
+        // // 3. Khởi tạo trang mặc định khi load web
+        // window.onload = () => {
+        //     const savedPage = localStorage.getItem('currentPage') || 'dashboard';
+        //     const targetItem = Array.from(document.querySelectorAll('.nav-item')).find(item => 
+        //         item.getAttribute('onclick').includes(savedPage)
+        //     );
+        //     navigate(savedPage, targetItem);
+        // };
+        // 1. Định nghĩa nội dung các trang dưới dạng HTML string
+        const pages = {
+            dashboard: `
+                <div class="fade-in">
+                    <h1>Tổng quan hệ thống</h1>
+                    <div class="stats-grid">... (code 3 ô thống kê của bạn) ...</div>
+                </div>
+            `,
+            inventory: `
+                <div class="fade-in">
+                    <h1>Danh sách kho hàng</h1>
+                    <div class="card-table">... (code bảng dữ liệu) ...</div>
+                </div>
+            `,
+            reports: `
+                <div class="fade-in">
+                    <h1>Báo cáo & Thống kê</h1>
+                    <p>Biểu đồ doanh thu và nhập xuất hàng tháng.</p>
+                </div>
+            `
+        };
+
+        // 2. Hàm xử lý chuyển trang
+        function changePage(pageId, element) {
+            const displayArea = document.getElementById('main-display');
+            
+            // Tạo hiệu ứng chuyển cảnh mượt mà
+            displayArea.style.opacity = 0;
+            
+            setTimeout(() => {
+                // Thay đổi nội dung
+                displayArea.innerHTML = pages[pageId];
+                
+                // Cập nhật trạng thái Active trên Sidebar
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                element.classList.add('active');
+                
+                // Hiện nội dung lên lại
+                displayArea.style.opacity = 1;
+            }, 200);
+        }
+
+        // 3. Tự động load trang Dashboard khi vừa mở web
+        window.onload = () => {
+            const defaultItem = document.querySelector('.nav-item');
+            changePage('dashboard', defaultItem);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMS PRO - Hệ Thống Quản Lý Kho</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo"><i class="fa-solid fa-box-archive"></i> WMS PRO</div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="navigate('dashboard', this)">
+                <i class="fa-solid fa-chart-pie"></i> <span>Tổng quan</span>
+            </li>
+            <li class="nav-item" onclick="navigate('plans', this)">
+                <i class="fa-solid fa-truck-ramp-box"></i> <span>Nhập/Xuất</span>
+            </li>
+            <li class="nav-item" onclick="navigate('inventory', this)">
+                <i class="fa-solid fa-list-check"></i> <span>Quản lý kho</span>
+            </li>
+            <li class="nav-item">
+                <i class="fa-solid fa-gear"></i> <span>Cài đặt</span>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="wrapper">
+        <nav class="top-nav">
+            <div id="page-title">Tổng quan</div>
+            <div style="display:flex; align-items:center; gap:15px;">
+                <span style="font-weight:600;">Admin</span>
+                <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" style="width:35px; border-radius:50%;">
+            </div>
+        </nav>
+        
+        <div class="content-body" id="main-content">
+            </div>
+    </div>
+
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:20px;">Tìm</h3>
+            <h3 style="margin-bottom:20px;">Thêm thiết bị mới</h3>
+            <form id="deviceForm">
+                <div class="form-group">
+                    <label>Tên thiết bị</label>
+                    <input type="text" id="devName" placeholder="VD: Dell Latitude 5420" required>
+                </div>
+                <div class="form-group">
+                    <label>Danh mục</label>
+                    <select id="devCat">
+                        <option value="Laptop">Laptop</option>
+                        <option value="Màn hình">Màn hình</option>
+                        <option value="Linh kiện">Linh kiện</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Số lượng</label>
+                    <input type="number" id="devQty" value="1" min="1">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu thiết bị</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 1. Dữ liệu giả lập
+        const deviceData = [
+            { name: 'MacBook Pro M2', sku: 'LAP-001', qty: 15, status: 'Còn hàng' },
+            { name: 'Dell UltraSharp 27', sku: 'MON-002', qty: 3, status: 'Sắp hết' },
+            { name: 'Logitech MX Master 3', sku: 'ACC-005', qty: 42, status: 'Còn hàng' }
+        ];
+
+        // 2. Templates các trang
+        const templates = {
+            dashboard: `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:#e0e7ff; color:#6366f1;"><i class="fa-solid fa-boxes-stacked"></i></div>
+                        <div class="stat-info"><span>Tổng tồn kho</span><h2>2,450</h2></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:#fef3c7; color:#f59e0b;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="stat-info"><span>Sắp hết hàng</span><h2>12</h2></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:#dcfce7; color:#22c55e;"><i class="fa-solid fa-cart-shopping"></i></div>
+                        <div class="stat-info"><span>Đang mua</span><h2>08</h2></div>
+                    </div>
+                </div>
+                <h3 style="margin-bottom:20px;">Danh mục thiết bị</h3>
+                <div class="category-grid">
+                    <div class="category-card"><div class="cat-icon"><i class="fa-solid fa-laptop"></i></div><h3>Máy tính</h3><p>120 thiết bị</p></div>
+                    <div class="category-card"><div class="cat-icon"><i class="fa-solid fa-print"></i></div><h3>Máy in</h3><p>45 thiết bị</p></div>
+                    <div class="category-card"><div class="cat-icon"><i class="fa-solid fa-network-wired"></i></div><h3>Thiết bị mạng</h3><p>32 thiết bị</p></div>
+                </div>
+            `,
+            inventory: `
+                <div style="display:flex; justify-content:space-between; margin-bottom:25px; align-items:center;">
+                    <h2>Danh sách kho chi tiết</h2>
+                    <button class="btn btn-secondary" onclick="openModal()">+ Tìm</button>
+                    <button class="btn btn-primary" onclick="openModal()">+ Thêm thiết bị</button>
+                </div>
+                <div class="card-table">
+                    <table>
+                        <thead>
+                            <tr><th>Tên thiết bị</th><th>SKU</th><th>Số lượng</th><th>Trạng thái</th><th>Thao tác</th></tr>
+                        </thead>
+                        <tbody id="inventoryTable">
+                            ${deviceData.map(item => `
+                                <tr>
+                                    <td><strong>${item.name}</strong></td>
+                                    <td><code>${item.sku}</code></td>
+                                    <td>${item.qty}</td>
+                                    <td><span class="status-badge ${item.status === 'Còn hàng' ? 'bg-success-light' : 'bg-warning-light'}">${item.status}</span></td>
+                                    <td><i class="fa-solid fa-ellipsis" style="cursor:pointer; color:#94a3b8;"></i></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `,
+            plans: `<h2>Kế hoạch Nhập / Xuất</h2><p style="margin-top:20px; color:#64748b;">Tính năng đang được phát triển...</p>`
+        };
+
+        // 3. Hàm điều hướng
+        function navigate(pageId, element) {
+            const main = document.getElementById('main-content');
+            const title = document.getElementById('page-title');
+            
+            main.style.opacity = '0';
+            setTimeout(() => {
+                main.innerHTML = templates[pageId];
+                title.innerText = element.querySelector('span').innerText;
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                element.classList.add('active');
+                main.style.opacity = '1';
+            }, 150);
+        }
+
+        // 4. Logic Modal
+        function openModal() { document.getElementById('addModal').classList.add('active'); }
+        function closeModal() { document.getElementById('addModal').classList.remove('active'); }
+
+        // 5. Xử lý Form
+        document.getElementById('deviceForm').onsubmit = (e) => {
+            e.preventDefault();
+            const newDev = {
+                name: document.getElementById('devName').value,
+                sku: 'SKU-' + Math.floor(Math.random()*1000),
+                qty: document.getElementById('devQty').value,
+                status: 'Còn hàng'
+            };
+            deviceData.unshift(newDev);
+            closeModal();
+            navigate('inventory', document.querySelectorAll('.nav-item')[1]);
+        };
+
+        // Khởi tạo trang đầu tiên
+        window.onload = () => navigate('dashboard', document.querySelector('.nav-item'));
+    </script>
+</body>
+</html>

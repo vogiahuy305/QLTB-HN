@@ -32,3 +32,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('addDeviceModal');
+    const openBtn = document.querySelector('.btn-primary'); // Nút "Thêm thiết bị" ở main-content
+    const closeBtn = document.querySelector('.close-modal');
+    const cancelBtn = document.getElementById('btnCancel');
+    const form = document.getElementById('addDeviceForm');
+
+    // Hàm mở Modal
+    openBtn.addEventListener('click', () => {
+        modal.classList.add('active');
+    });
+
+    // Hàm đóng Modal
+    const closeModal = () => {
+        modal.classList.remove('active');
+        form.reset(); // Xóa dữ liệu cũ trong form
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+
+    // Đóng khi click ra ngoài hộp thoại
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    // Xử lý gửi form (Submit)
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Lấy dữ liệu từ các ô input
+        const newDevice = {
+            name: document.getElementById('deviceName').value,
+            sku: document.getElementById('deviceSku').value,
+            category: document.getElementById('deviceCategory').value,
+            stock: document.getElementById('deviceStock').value
+        };
+
+        console.log("Dữ liệu thiết bị mới:", newDevice);
+        
+        // Ở đây bạn sẽ gọi API gửi dữ liệu lên server (đã học ở bước trước)
+        
+        alert("Đã thêm thiết bị thành công!");
+        closeModal();
+    });
+});
